@@ -63,3 +63,9 @@ export function getGmgnbotLink(addr = "") {
 export function getLaunchpadLink(launchpad: Launchpad) {
   return `/launchpad?launchpad=${launchpad}`
 }
+
+export function getKlineLink(addr: string) {
+  if (addr) {
+    return `https://www.gmgn.cc/kline/sol/${addr}`
+  }
+}

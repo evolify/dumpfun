@@ -12,6 +12,7 @@ import { Copy, Twitter } from "lucide-react"
 
 interface Props {
   data: PoolInfo
+  onClick: (data: PoolInfo) => void
 }
 
 function renderDurationValue(
@@ -32,17 +33,20 @@ function renderDurationValue(
   })
 }
 
-export default function Item({ data }: Props) {
+export default function Item(props: Props) {
+  const { data, onClick } = props
   const { baseAsset } = data
-  function copyAddr() {
+  function copyAddr(e: React.MouseEvent) {
+    e?.stopPropagation()
     copy(baseAsset.id)
   }
-  function to(link: string, label: TrackLabel) {
+  function to(link: string, label: TrackLabel, e?: React.MouseEvent) {
+    e?.stopPropagation()
     click(label)
     window.open(link)
   }
   return (
-    <Card className="px-0 py-0 gap-0">
+    <Card className="px-0 py-0 gap-0" onClick={() => onClick(data)}>
       <div className="flex flex-row items-center gap-2 px-3 py-2">
         <img src={data.baseAsset.icon} className="w-8 h-8 rounded-[6px]" />
         <div className="flex-1">
@@ -50,7 +54,7 @@ export default function Item({ data }: Props) {
             <span> {data.baseAsset.symbol} </span>
             <div
               className="flex flex-row items-center gap-1 text-sm text-gray-400"
-              onClick={copyAddr}
+              onClick={e => copyAddr(e)}
             >
               {formatAddress(data.baseAsset.id)}
               <Copy className="w-4 h-4" />
@@ -102,7 +106,7 @@ export default function Item({ data }: Props) {
           <Button
             variant="secondary"
             size="sm"
-            onClick={() => to(baseAsset.twitter, TrackLabel.TWITTER)}
+            onClick={e => to(baseAsset.twitter, TrackLabel.TWITTER, e)}
           >
             <Twitter className="w-4 h-4 text-blue-500" />
           </Button>
@@ -112,14 +116,14 @@ export default function Item({ data }: Props) {
           variant="secondary"
           size="sm"
           className="ml-auto"
-          onClick={() => to(getGmgnLink(baseAsset.id), TrackLabel.GMGN)}
+          onClick={e => to(getGmgnLink(baseAsset.id), TrackLabel.GMGN, e)}
         >
           GMGN
         </Button>
         <Button
           variant="secondary"
           size="sm"
-          onClick={() => to(getAxiomLink(baseAsset.id), TrackLabel.AXIOM)}
+          onClick={e => to(getAxiomLink(baseAsset.id), TrackLabel.AXIOM, e)}
         >
           Axiom
         </Button>
