@@ -22,6 +22,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import Icon from "@/components/icon"
 
 interface Props {
   data: Promise<LaunchpadsInfo[]>
@@ -88,7 +89,10 @@ export default function LaunchpadsTable(props: Props) {
                 >
                   {/* <div className="absolute top-0 left-0 w-full h-full z-[0] bg-red-500"></div> */}
                   <TableCell className="font-medium">
-                    {item.launchpad}
+                    <div className="flex flex-row items-center gap-2">
+                      <Icon url={item.icon} size={16} />
+                      {item.launchpad}
+                    </div>
                   </TableCell>
                   <TableCell className="text-yellow-500 font-bold">
                     {formatNumber(item.liquidity)}

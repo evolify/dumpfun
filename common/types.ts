@@ -17,6 +17,7 @@ export interface LaunchpadsInfo {
   id: string
   launchpad: string
   liquidity: number
+  icon: string
   stats5m: LaunchpadsStats
   stats1h: LaunchpadsStats
   stats6h: LaunchpadsStats

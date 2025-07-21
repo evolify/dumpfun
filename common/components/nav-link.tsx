@@ -3,15 +3,23 @@ import { click, TrackLabel } from "@/utils/track"
 import { MoveUpRight } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"
+import Icon from "./icon"
 
 interface NavLinkProps {
   label: string
   value: string
+  icon?: string
   trackLabel: TrackLabel
   className?: string
 }
 
-export function NavLink({ label, value, trackLabel, className }: NavLinkProps) {
+export function NavLink({
+  label,
+  value,
+  icon,
+  trackLabel,
+  className,
+}: NavLinkProps) {
   function onClick() {
     if (trackLabel) {
       click(trackLabel)
@@ -27,9 +35,10 @@ export function NavLink({ label, value, trackLabel, className }: NavLinkProps) {
       target="_blank"
       onClick={onClick}
     >
-      <span className="flex flex-row items-center justify-between text-md text-gray-200">
+      <span className="flex flex-row items-center gap-2 text-md text-gray-200">
+        {icon && <Icon url={icon} size={16} />}
         {label}
-        <MoveUpRight style={{ width: 12, height: 12 }} className="ml-1" />
+        <MoveUpRight style={{ width: 12, height: 12 }} className="ml-auto" />
       </span>
     </Link>
   )

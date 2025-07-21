@@ -7,6 +7,7 @@ import {
 import {
   getAxiomLink,
   getBonkbotLink,
+  getFavicon,
   getGmgnbotLink,
   getGmgnLink,
   getPepeboostLink,
@@ -19,13 +20,22 @@ import { cn } from "@/lib/utils"
 import { TrackLabel } from "@/utils/track"
 import { NavLink } from "./nav-link"
 
-const menus = [
+interface MenuItem {
+  label: string
+  value?: string
+  trackLabel?: TrackLabel
+  icon?: string
+  children?: MenuItem[]
+}
+
+const menus: MenuItem[] = [
   {
     label: "Launchpads",
     children: Object.values(LaunchpadConfig).map(t => ({
       label: t.name,
       value: t.url,
       trackLabel: TrackLabel.LAUNCHPAD,
+      icon: getFavicon(t.home),
     })),
   },
   {
@@ -61,12 +71,13 @@ const menus = [
 ]
 
 interface Props {
-  title?: string
+  title?: React.ReactNode
   subTitle?: React.ReactNode
 }
 
 export default function Header(props: Props) {
-  const { title = "Dumpfun", subTitle } = props
+  const { title = <div className="text-xl font-bold">Dumpfun</div>, subTitle } =
+    props
   return (
     <header className="flex flex-row items-center h-14 px-4">
       {/* sidebar menu */}
@@ -94,8 +105,9 @@ export default function Header(props: Props) {
                           <NavLink
                             key={t.label}
                             label={t.label}
-                            value={t.value}
-                            trackLabel={t.trackLabel}
+                            value={t.value!}
+                            icon={t.icon}
+                            trackLabel={t.trackLabel!}
                           />
                         ))}
                       </ul>
@@ -103,8 +115,9 @@ export default function Header(props: Props) {
                   ) : (
                     <NavLink
                       label={item.label}
-                      value={item.value}
-                      trackLabel={item.trackLabel}
+                      value={item.value!}
+                      icon={item.icon}
+                      trackLabel={item.trackLabel!}
                     />
                   )}
                 </li>
@@ -113,7 +126,7 @@ export default function Header(props: Props) {
           </SheetContent>
         </Sheet>
       </div>
-      <div className="text-xl font-bold">{title}</div>
+      {title}
       {subTitle && (
         <div className="ml-auto text-sm text-blue-100">{subTitle}</div>
       )}
@@ -135,8 +148,9 @@ export default function Header(props: Props) {
                         <NavLink
                           key={t.label}
                           label={t.label}
-                          value={t.value}
-                          trackLabel={t.trackLabel}
+                          value={t.value!}
+                          icon={t.icon}
+                          trackLabel={t.trackLabel!}
                         />
                       ))}
                     </div>
@@ -145,8 +159,9 @@ export default function Header(props: Props) {
               ) : (
                 <NavLink
                   label={item.label}
-                  value={item.value}
-                  trackLabel={item.trackLabel}
+                  value={item.value!}
+                  icon={item.icon}
+                  trackLabel={item.trackLabel!}
                 />
               )}
             </NavigationMenuItem>

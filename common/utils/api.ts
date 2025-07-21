@@ -1,9 +1,11 @@
-import { LaunchpadsInfo } from "@/types"
+import { Launchpad, LaunchpadsInfo } from "@/types"
 
 const LaunchpadsStatsUrl = "https://datapi.jup.ag/v1/launchpads/stats"
 const LaunchpadDetailUrl = "https://datapi.jup.ag/v1/pools/toptraded"
 
 import { ProxyAgent } from "undici"
+import { getFavicon } from "."
+import { LaunchpadConfig } from "@/constants"
 
 export const isServer = typeof window === "undefined"
 
@@ -24,15 +26,20 @@ const options = {
   dispatcher: isServer && proxy ? new ProxyAgent(proxy) : undefined,
 }
 
-console.log("---- proxy ----", proxy, options.dispatcher)
-
 export async function getLaunchpadsStats() {
   const res = await fetch(LaunchpadsStatsUrl, options)
   const data = await res.json()
   return (
-    data?.launchpads.map((t: LaunchpadsInfo) => ({
-      ...t,
-      id: t.launchpad.replaceAll(".", "_").replaceAll("-", "_"),
-    })) || []
+    data?.launchpads.map((t: LaunchpadsInfo) => {
+      const id = t.launchpad
+        .replaceAll(".", "_")
+        .replaceAll("-", "_") as Launchpad
+      const config = LaunchpadConfig[id]
+      return {
+        ...t,
+        id,
+        icon: getFavicon(config?.home),
+      }
+    }) || []
   )
 }

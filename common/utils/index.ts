@@ -9,8 +9,6 @@ import type {
 
 export const isDev = process.env.NODE_ENV === "development"
 
-const host = isDev ? "http://localhost:5173" : "https://dumpfun.vercel.app"
-
 export function fetcher(url: string, init?: RequestInit) {
   return fetch(url, init).then(res => res.json())
 }
@@ -68,4 +66,10 @@ export function getKlineLink(addr: string) {
   if (addr) {
     return `https://www.gmgn.cc/kline/sol/${addr}`
   }
+}
+
+export function getFavicon(url: string) {
+  if (!url) return ""
+  // return `https://www.google.com/s2/favicons?domain_url=${url}&sz=96`
+  return `https://favicon.im/${url}`
 }
