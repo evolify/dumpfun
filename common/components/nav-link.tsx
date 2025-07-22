@@ -36,7 +36,7 @@ export function NavLink({
       onClick={onClick}
     >
       <span className="flex flex-row items-center gap-2 text-md text-gray-200">
-        {icon && <Icon url={icon} size={16} />}
+        {icon && <Icon src={icon} size={16} />}
         {label}
         <MoveUpRight style={{ width: 12, height: 12 }} className="ml-auto" />
       </span>
