@@ -90,7 +90,7 @@ export default function LaunchpadsTable(props: Props) {
                   {/* <div className="absolute top-0 left-0 w-full h-full z-[0] bg-red-500"></div> */}
                   <TableCell className="font-medium">
                     <div className="flex flex-row items-center gap-2">
-                      <Icon url={item.icon} size={16} />
+                      <Icon src={item.icon} size={16} />
                       {item.launchpad}
                     </div>
                   </TableCell>

@@ -4,12 +4,19 @@ import "./style.css"
 import { copy } from "@/utils/client"
 import { click, TrackLabel } from "@/utils/track"
 import { formatAddress, formatNumber, formatTime } from "@/utils/format"
-import { Copy, Twitter } from "lucide-react"
+import { Copy, Search, Twitter } from "lucide-react"
 import { Separator } from "@/components/ui/separator"
 import { Durations } from "@/hooks/duration"
-import { getAxiomLink, getGmgnLink, getKlineLink, getTokenStats } from "@/utils"
+import {
+  getAxiomLink,
+  getGmgnLink,
+  getKlineLink,
+  getTokenStats,
+  searchOnTwitter,
+} from "@/utils"
 import Percent from "@/components/percent"
 import { Button } from "@/components/ui/button"
+import { AxiomIcon, GmgnIcon } from "@/components/icon"
 
 interface Props {
   data: PoolInfo | null
@@ -45,14 +52,18 @@ export default function Detail(props: Props) {
     click(label)
     window.open(link)
   }
+  function toSearch() {
+    click(TrackLabel.TWITTER)
+    searchOnTwitter(baseAsset.id)
+  }
 
   return (
     <div
-      className="fixed top-0 left-0 w-full h-full bg-black/50 z-1000 flex flex-col items-center justify-center p-4"
+      className="fixed top-0 left-0 w-full h-full bg-black/70 z-1000 flex flex-col items-center justify-center"
       onClick={onClose}
     >
       <Card className="detail p-0 gap-0" onClick={e => e.stopPropagation()}>
-        <div className="flex flex-row items-center gap-2 px-3 py-4">
+        <div className="flex flex-row items-center gap-2 p-4">
           <img src={data.baseAsset.icon} className="w-8 h-8 rounded-[6px]" />
           <div className="flex-1">
             <div className="flex flex-row items-center gap-4">
@@ -71,7 +82,7 @@ export default function Detail(props: Props) {
         </div>
 
         {/* chart */}
-        <div className="h-[364px] overflow-hidden">
+        <div className="h-[364px] overflow-hidden px-4">
           <iframe
             src={getKlineLink(baseAsset.id)}
             width="100%"
@@ -80,7 +91,7 @@ export default function Detail(props: Props) {
           />
         </div>
 
-        <div className="px-3 py-3 flex flex-col gap-1">
+        <div className="p-4 flex flex-col gap-1">
           <div className="flex flex-row items-center gap-2">
             <div>
               <span className="text-sm text-gray-400">MC</span>
@@ -120,6 +131,9 @@ export default function Detail(props: Props) {
         </div>
         <Separator />
         <div className="flex flex-row items-center gap-2 px-2 py-2">
+          <Button variant="secondary" size="sm" onClick={toSearch}>
+            <Search className="w-4 h-4 text-cyan-500" />
+          </Button>
           {baseAsset.twitter && (
             <Button
               variant="secondary"
@@ -136,6 +150,7 @@ export default function Detail(props: Props) {
             className="ml-auto"
             onClick={() => to(getGmgnLink(baseAsset.id), TrackLabel.GMGN)}
           >
+            <GmgnIcon />
             GMGN
           </Button>
           <Button
@@ -143,6 +158,7 @@ export default function Detail(props: Props) {
             size="sm"
             onClick={() => to(getAxiomLink(baseAsset.id), TrackLabel.AXIOM)}
           >
+            <AxiomIcon />
             Axiom
           </Button>
         </div>

@@ -24,7 +24,7 @@ export default function Basic(props: Props) {
       {list.map(item => (
         <Card key={item.id} className="flex-1 px-3 py-2 gap-0">
           <div className="flex flex-row items-center gap-2">
-            <Icon url={item.icon} size={16} />
+            <Icon src={item.icon} size={16} />
             <div className="text-sm text-gray-300">{item.launchpad}</div>
           </div>
           <div className="flex flex-row items-baseline justify-between mb-2">

@@ -73,3 +73,8 @@ export function getFavicon(url: string) {
   // return `https://www.google.com/s2/favicons?domain_url=${url}&sz=96`
   return `https://favicon.im/${url}`
 }
+
+export function searchOnTwitter(addr: string) {
+  const link = `https://x.com/search?q=${addr}`
+  window.open(link)
+}
