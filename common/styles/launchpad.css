@@ -6,3 +6,12 @@
   --chart-moonshot: #7E57C2;
   --chart-others: #9E9E9E;
 }
+
+@theme {
+  /* 针对不同市值的token，设置不同的颜色 */
+  --color-great: oklch(75% 0.183 55.934);
+  --color-good: oklch(69.6% 0.17 162.48);
+  --color-average: oklch(87.2% 0.01 258.338);
+  --color-early: oklch(62.3% 0.214 259.815);
+  --color-bad: oklch(71.2% 0.194 13.428);
+}

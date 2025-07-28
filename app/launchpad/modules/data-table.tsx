@@ -21,6 +21,8 @@ import { NavLink } from "@/components/nav-link"
 import { TrackLabel } from "@/utils/track"
 import { formatNumber, formatTime } from "@/utils/format"
 import { useStickyTable } from "@/hooks/table"
+import { getFdvColor, getTimeColor } from "@/utils/color"
+import clsx from "clsx"
 
 interface Props {
   data: PoolInfo[]
@@ -31,7 +33,7 @@ interface Props {
 export default function DataTable({ data, duration, onItemClick }: Props) {
   const { tableRef } = useStickyTable()
   return (
-    <Card className="p-0">
+    <Card className="p-0 overflow-hidden">
       <Table ref={tableRef}>
         <TableHeader className="sticky top-0 bg-background">
           <TableRow className="text-sm text-gray-400">
@@ -55,11 +57,15 @@ export default function DataTable({ data, duration, onItemClick }: Props) {
                     <img src={item.baseAsset.icon} />
                   </div>
                   <div>
-                    <div> {item.baseAsset.symbol} </div>
-                    <div>{formatTime(item.createdAt)}</div>
+                    <div>{item.baseAsset.symbol}</div>
+                    <div className={getTimeColor(item.createdAt)}>
+                      {formatTime(item.createdAt)}
+                    </div>
                   </div>
                 </TableCell>
-                <TableCell>{formatNumber(item.baseAsset.mcap)}</TableCell>
+                <TableCell className={getFdvColor(item.baseAsset.mcap)}>
+                  {formatNumber(item.baseAsset.mcap)}
+                </TableCell>
                 <TableCell>{formatNumber(item.liquidity)}</TableCell>
                 <TableCell>
                   {formatNumber(item.baseAsset.holderCount)}

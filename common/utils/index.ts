@@ -62,9 +62,15 @@ export function getLaunchpadLink(launchpad: Launchpad) {
   return `/launchpad?launchpad=${launchpad}`
 }
 
-export function getKlineLink(addr: string) {
+/**
+ * 
+ * @param addr token addr
+ * @param interval 1S 1 5 15 60 240 720 1D
+ * @returns 
+ */
+export function getKlineLink(addr: string, interval = '5') {
   if (addr) {
-    return `https://www.gmgn.cc/kline/sol/${addr}`
+    return `https://www.gmgn.cc/kline/sol/${addr}?interval=${interval}`
   }
 }
 

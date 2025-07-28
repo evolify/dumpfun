@@ -24,7 +24,7 @@ function renderGrid(data: PoolInfo[], onItemClick: (data: PoolInfo) => void) {
 }
 
 export default function List() {
-  const { duration, onChange } = useDuration("24h")
+  const { duration, onChange } = useDuration("5m")
   const [layout, setLayout] = useState<"grid" | "table">("table")
   const { isLoading, data, mutate } = useLaunchpadDetail(launchpad!, duration)
   const [selected, setSelected] = useState<PoolInfo | null>(null)
