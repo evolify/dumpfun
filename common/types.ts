@@ -96,3 +96,10 @@ export interface PoolInfo {
   updatedAt: string
   volume24h: number
 }
+
+export interface Holder {
+  address: string
+  amount: number
+  solBalance: string
+  tags: Array<{ id: string; name: string }>
+}

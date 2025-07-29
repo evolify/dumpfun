@@ -1,48 +1,29 @@
 import { Card } from "@/components/ui/card"
-import { PoolInfo, PoolStats, TokenInfo } from "@/types"
+import { PoolInfo } from "@/types"
 import "./style.css"
 import { copy } from "@/utils/client"
 import { click, TrackLabel } from "@/utils/track"
-import { formatAddress, formatNumber, formatTime } from "@/utils/format"
+import { formatAddress, formatTime } from "@/utils/format"
 import { Copy, Search, Twitter } from "lucide-react"
 import { Separator } from "@/components/ui/separator"
-import { Durations } from "@/hooks/duration"
-import {
-  getAxiomLink,
-  getGmgnLink,
-  getKlineLink,
-  getTokenStats,
-  searchOnTwitter,
-} from "@/utils"
-import Percent from "@/components/percent"
+import { getAxiomLink, getGmgnLink, searchOnTwitter } from "@/utils"
 import { Button } from "@/components/ui/button"
 import { AxiomIcon, GmgnIcon } from "@/components/icon"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import Info from "./info"
+import Holders from "./holders"
+import { Badge } from "@/components/ui/badge"
 
 interface Props {
   data: PoolInfo | null
   onClose: () => void
 }
 
-function renderDurationValue(
-  token: TokenInfo,
-  key: keyof PoolStats,
-  render: (value: number) => React.ReactNode = value => <span>{value}</span>
-) {
-  return Durations.map(t => {
-    const stat = getTokenStats(token, t)
-    if (stat?.[key]) {
-      return (
-        <div key={t} className="flex flex-row items-center gap-1">
-          <span className="text-sm text-gray-400">{t}</span>
-          {render(stat[key])}
-        </div>
-      )
-    }
-  })
-}
 export default function Detail(props: Props) {
   const { data, onClose } = props
+
   if (!data) return null
+
   const { baseAsset } = data
 
   function copyAddr() {
@@ -75,60 +56,35 @@ export default function Detail(props: Props) {
                 {formatAddress(data.baseAsset.id)}
                 <Copy className="w-4 h-4" />
               </div>
+              <div className="ml-auto">{formatTime(data.createdAt)}</div>
             </div>
-            <div className="text-sm text-gray-400">{data.baseAsset.name}</div>
+            <div className="flex items-center gap-2">
+              <div className="text-sm text-gray-400">{data.baseAsset.name}</div>
+              <Badge variant="secondary" className="ml-auto">
+                Dev Tokens {baseAsset.audit.devMigrations}
+              </Badge>
+              <Badge variant="secondary">
+                Top Holde {baseAsset.audit.topHoldersPercentage.toFixed(2)}%
+              </Badge>
+            </div>
           </div>
-          <div className="self-start px-2">{formatTime(data.createdAt)}</div>
         </div>
 
-        {/* chart */}
-        <div className="h-[364px] overflow-hidden px-4">
-          <iframe
-            src={getKlineLink(baseAsset.id)}
-            width="100%"
-            height={400}
-            className="border-none"
-          />
-        </div>
+        <Tabs defaultValue="info" className="grow-1 h-0 px-5">
+          <TabsList className="self-stretch w-full">
+            <TabsTrigger value="info">Info</TabsTrigger>
+            <TabsTrigger value="holders">
+              Holder({baseAsset.holderCount})
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="info">
+            <Info data={data} />
+          </TabsContent>
+          <TabsContent value="holders" className="h-0 flex-1 overflow-y-auto">
+            <Holders address={baseAsset.id} supply={baseAsset.circSupply} />
+          </TabsContent>
+        </Tabs>
 
-        <div className="p-4 flex flex-col gap-1">
-          <div className="flex flex-row items-center gap-2">
-            <div>
-              <span className="text-sm text-gray-400">MC</span>
-              <span className="ml-1">{formatNumber(baseAsset.mcap)}</span>
-            </div>
-            <Separator orientation="vertical" className="min-h-4" />
-            <div>
-              <span className="text-sm text-gray-400">Liquidity</span>
-              <span className="ml-1">{formatNumber(baseAsset.liquidity)}</span>
-            </div>
-            <Separator orientation="vertical" className="min-h-4" />
-            <div>
-              <span className="text-sm text-gray-400">Holders</span>
-              <span className="ml-1">
-                {formatNumber(baseAsset.holderCount)}
-              </span>
-            </div>
-          </div>
-          <div className="flex flex-row items-center gap-2">
-            <span className="text-sm text-gray-400">Price</span>
-            {renderDurationValue(baseAsset, "priceChange", val => (
-              <Percent value={val} />
-            ))}
-          </div>
-          <div className="flex flex-row items-center gap-2">
-            <span className="text-sm text-gray-400">Volume</span>
-            {renderDurationValue(baseAsset, "volumeChange", val => (
-              <Percent value={val} />
-            ))}
-          </div>
-          <div className="flex flex-row items-center gap-2">
-            <span className="text-sm text-gray-400">Holder</span>
-            {renderDurationValue(baseAsset, "holderChange", val => (
-              <Percent value={val} />
-            ))}
-          </div>
-        </div>
         <Separator />
         <div className="flex flex-row items-center gap-2 px-2 py-2">
           <Button variant="secondary" size="sm" onClick={toSearch}>

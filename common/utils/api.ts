@@ -3,6 +3,8 @@ import { Launchpad, LaunchpadsInfo } from "@/types"
 const LaunchpadsStatsUrl = "https://datapi.jup.ag/v1/launchpads/stats"
 const LaunchpadDetailUrl = "https://datapi.jup.ag/v1/pools/toptraded"
 
+const HoldersUrlBase = "https://datapi.jup.ag/v1/holders"
+
 import { ProxyAgent } from "undici"
 import { getFavicon } from "."
 import { LaunchpadConfig } from "@/constants"
@@ -42,4 +44,10 @@ export async function getLaunchpadsStats() {
       }
     }) || []
   )
+}
+
+export async function getHolders(addr: string) {
+  const res = await fetch(`${HoldersUrlBase}/addr`, options)
+  const data = await res.json()
+  return data
 }

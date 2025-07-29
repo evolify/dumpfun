@@ -1,9 +1,19 @@
 import { LaunchpadConfig } from "@/constants"
-import type { Duration, Launchpad, LaunchpadsInfo, PoolInfo } from "@/types"
+import type {
+  Duration,
+  Holder,
+  Launchpad,
+  LaunchpadsInfo,
+  PoolInfo,
+} from "@/types"
 import useSWR from "swr"
 
 const LaunchpadsStatsUrl = "https://datapi.jup.ag/v1/launchpads/stats"
 const LaunchpadDetailUrl = "https://datapi.jup.ag/v1/pools/toptraded"
+const HoldersUrl = "https://datapi.jup.ag/v1/holders"
+
+export const fetcher = (resource: string, init: RequestInit) =>
+  fetch(resource, init).then(res => res.json())
 
 async function getLaunchpadsStats() {
   const res = await fetch(LaunchpadsStatsUrl)
@@ -43,6 +53,20 @@ export function useLaunchpadDetail(launchpad: Launchpad, duration: Duration) {
 
   return {
     data,
+    isLoading,
+    error,
+    mutate,
+  }
+}
+
+export function useHolders(addr: string) {
+  const { data, isLoading, error, mutate } = useSWR<{
+    count: number
+    holders: Holder[]
+  }>(`${HoldersUrl}/${addr}`, fetcher)
+  return {
+    holders: data?.holders || [],
+    count: data?.count || 0,
     isLoading,
     error,
     mutate,

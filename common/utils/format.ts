@@ -48,3 +48,10 @@ export function formatTime(timestamp: string) {
 export function formatAddress(address: string) {
   return address.slice(0, 6) + "..." + address.slice(-4)
 }
+
+export function formatString(str: string) {
+  if (str.length > 10) {
+    return str.slice(0, 5) + "..." + str.slice(-5)
+  }
+  return str
+}
