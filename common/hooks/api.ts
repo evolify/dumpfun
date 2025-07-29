@@ -11,6 +11,7 @@ import useSWR from "swr"
 const LaunchpadsStatsUrl = "https://datapi.jup.ag/v1/launchpads/stats"
 const LaunchpadDetailUrl = "https://datapi.jup.ag/v1/pools/toptraded"
 const HoldersUrl = "https://datapi.jup.ag/v1/holders"
+const NarrativeUrl = "https://datapi.jup.ag/v1/chaininsight/narrative"
 
 export const fetcher = (resource: string, init: RequestInit) =>
   fetch(resource, init).then(res => res.json())
@@ -71,4 +72,9 @@ export function useHolders(addr: string) {
     error,
     mutate,
   }
+}
+
+export function useNarrative(addr: string) {
+  const { data } = useSWR(`${NarrativeUrl}/${addr}`, fetcher)
+  return data?.narrative || ""
 }

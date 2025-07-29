@@ -1,5 +1,6 @@
 import Percent from "@/components/percent"
 import { Separator } from "@/components/ui/separator"
+import { useNarrative } from "@/hooks/api"
 import { Durations } from "@/hooks/duration"
 import { PoolInfo, PoolStats, TokenInfo } from "@/types"
 import { getKlineLink, getTokenStats } from "@/utils"
@@ -27,6 +28,7 @@ function renderDurationValue(
 }
 export default function Info({ data }: Props) {
   const { baseAsset } = data
+  const narrative = useNarrative(data.baseAsset.id)
   return (
     <div className="flex flex-col h-full">
       <div className="h-0 flex-1 relative overflow-hidden">
@@ -72,6 +74,9 @@ export default function Info({ data }: Props) {
             <Percent value={val} />
           ))}
         </div>
+        {narrative && (
+          <div className="text-sm text-gray-200 mt-2">{narrative}</div>
+        )}
       </div>
     </div>
   )
