@@ -29,7 +29,7 @@ export default function Info({ data }: Props) {
   const { baseAsset } = data
   return (
     <div className="flex flex-col h-full">
-      <div className="h-[364px] flex-1 relative overflow-hidden">
+      <div className="h-0 flex-1 relative overflow-hidden">
         <iframe
           src={getKlineLink(baseAsset.id)}
           width="100%"
