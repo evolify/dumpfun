@@ -12,6 +12,7 @@ import Empty from "@/components/empty"
 import { Button } from "@/components/ui/button"
 import DataTable from "./data-table"
 import Detail from "./details"
+import Modal from "@/components/modal"
 
 function renderGrid(data: PoolInfo[], onItemClick: (data: PoolInfo) => void) {
   return (
@@ -88,7 +89,13 @@ export default function List() {
         </Button>
       </div>
       {renderContent()}
-      <Detail data={selected} onClose={() => setSelected(null)} />
+      <Modal
+        open={Boolean(selected)}
+        onClose={() => setSelected(null)}
+        className="detail"
+      >
+        <Detail data={selected} />
+      </Modal>
     </div>
   )
 }
