@@ -45,6 +45,11 @@ export function formatTime(timestamp: string) {
   }
 }
 
+export function formatDate(date: string) {
+  const d = new Date(date)
+  return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`
+}
+
 export function formatAddress(address: string) {
   return address.slice(0, 6) + "..." + address.slice(-4)
 }

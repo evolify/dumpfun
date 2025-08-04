@@ -10,11 +10,10 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import cls from "clsx"
-import type { Duration, LaunchpadsInfo } from "@/types"
+import type { LaunchpadsInfo } from "@/types"
 import { formatNumber, percent } from "@/utils/format"
 import { use, useMemo, useState } from "react"
-import { getStats } from "@/utils"
-import DurationFilter from "@/components/duration-filter"
+import { getLaunchpadStats } from "@/utils"
 import {
   Card,
   CardAction,
@@ -23,6 +22,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import Icon from "@/components/icon"
+import DurationFilter, { Duration } from "./duration-filter"
 
 interface Props {
   data: Promise<LaunchpadsInfo[]>
@@ -41,12 +41,15 @@ function getBackground(percent: number) {
 const headerClass = "text-sm text-white-100"
 
 export default function LaunchpadsTable(props: Props) {
-  const [duration, setDuration] = useState<Duration>("24h")
+  const [duration, setDuration] = useState<Duration>("1d")
 
   const list = use(props.data).slice(0, 10)
 
-  const totalLiquidity = useMemo(() => {
-    return list.reduce((acc, item) => acc + item.liquidity, 0)
+  const totalVolume = useMemo(() => {
+    return list.reduce(
+      (acc, item) => acc + getLaunchpadStats(item, duration).volume,
+      0
+    )
   }, [list])
 
   return (
@@ -64,7 +67,6 @@ export default function LaunchpadsTable(props: Props) {
           <TableHeader>
             <TableRow className="text-sm text-gray-400">
               <TableHead className={headerClass}>Launchpad</TableHead>
-              <TableHead className={headerClass}>Liquidity</TableHead>
               <TableHead className={headerClass}>{duration} Volume</TableHead>
               <TableHead className={headerClass}>{duration} Trades</TableHead>
               <TableHead className={headerClass}>{duration} Mints</TableHead>
@@ -78,25 +80,22 @@ export default function LaunchpadsTable(props: Props) {
 
           <TableBody>
             {list.map(item => {
-              const stats = getStats(item, duration)
+              const stats = getLaunchpadStats(item, duration)
               return (
                 <TableRow
                   className="relative"
                   key={item.launchpad}
                   style={{
-                    background: getBackground(item.liquidity / totalLiquidity),
+                    background: getBackground(stats.volume / totalVolume),
                   }}
                 >
-                  {/* <div className="absolute top-0 left-0 w-full h-full z-[0] bg-red-500"></div> */}
                   <TableCell className="font-medium">
                     <div className="flex flex-row items-center gap-2">
                       <Icon src={item.icon} size={16} />
                       {item.launchpad}
                     </div>
                   </TableCell>
-                  <TableCell className="text-yellow-500 font-bold">
-                    {formatNumber(item.liquidity)}
-                  </TableCell>
+
                   <TableCell className="text-blue-500">
                     {formatNumber(stats.volume)}
                   </TableCell>
@@ -116,7 +115,7 @@ export default function LaunchpadsTable(props: Props) {
             <TableRow>
               <TableCell colSpan={3}>Total Liquidity</TableCell>
               <TableCell className="text-right">
-                {formatNumber(totalLiquidity)}
+                {formatNumber(totalVolume)}
               </TableCell>
             </TableRow>
           </TableFooter>

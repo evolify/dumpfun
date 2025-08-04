@@ -40,11 +40,11 @@ export default function DataTable({ data, duration, onItemClick }: Props) {
           <TableRow className="text-sm text-gray-400">
             <TableHead>Name / Age</TableHead>
             <TableHead>Market Cap</TableHead>
-            <TableHead>Liquidity</TableHead>
             <TableHead>Holders</TableHead>
+            <TableHead>Traders</TableHead>
             <TableHead>{duration} Volume</TableHead>
             <TableHead>Buys / Sells</TableHead>
-            <TableHead>Traders</TableHead>
+            <TableHead>Liquidity</TableHead>
             <TableHead></TableHead>
           </TableRow>
         </TableHeader>
@@ -71,10 +71,10 @@ export default function DataTable({ data, duration, onItemClick }: Props) {
                 <TableCell className={getFdvColor(item.baseAsset.mcap)}>
                   {formatNumber(item.baseAsset.mcap)}
                 </TableCell>
-                <TableCell>{formatNumber(item.liquidity)}</TableCell>
                 <TableCell>
                   {formatNumber(item.baseAsset.holderCount)}
                 </TableCell>
+                <TableCell>{formatNumber(stats.numTraders)}</TableCell>
                 <TableCell>
                   {formatNumber(stats.buyVolume + stats.sellVolume)}
                 </TableCell>
@@ -82,7 +82,7 @@ export default function DataTable({ data, duration, onItemClick }: Props) {
                   <div>{formatNumber(stats.numBuys)}</div>
                   <div>{formatNumber(stats.numSells)}</div>
                 </TableCell>
-                <TableCell>{formatNumber(stats.numTraders)}</TableCell>
+                <TableCell>{formatNumber(item.liquidity)}</TableCell>
                 <TableCell>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>

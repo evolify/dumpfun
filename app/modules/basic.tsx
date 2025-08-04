@@ -30,11 +30,13 @@ export default function Basic(props: Props) {
               <ArrowUpRight className="ml-auto opacity-60 w-4" />
             </div>
             <div className="flex flex-row items-baseline justify-between mb-2">
-              <div className="text-sm text-gray-300">Liquidity</div>
-              <div className="text-4xl">{formatNumber(item.liquidity)}</div>
+              <div className="text-sm text-gray-300">Volume</div>
+              <div className="text-2xl">
+                {formatNumber(item.stats1d.volume)}
+              </div>
             </div>
-            {renderItem("24h volume", item.stats24h.volume)}
-            {renderItem("24h traders", item.stats24h.traders)}
+            {renderItem("runners", item.stats1d.runners)}
+            {renderItem("traders", item.stats1d.traders)}
           </Card>
         </a>
       ))}

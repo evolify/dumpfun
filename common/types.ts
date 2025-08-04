@@ -6,27 +6,42 @@ export enum Launchpad {
   Believe = "Believe",
   Moonshot = "moonshot",
 }
-export interface LaunchpadsStats {
+export interface LaunchpadsStat {
   graduates: number
   marketShare: number
+  newMarketShare: number
   mints: number
   traders: number
+  newTraders: number
+  volume: number
+  newVolume: number
+  runners: number
+}
+
+interface DailyStat {
+  date: string
+  marketShare: number
   volume: number
 }
 
 export interface LaunchpadsInfo {
   id: string
   launchpad: string
-  liquidity: number
+  dailyStats: DailyStat[]
+  newDailyStats: DailyStat[]
+  stats1d: LaunchpadsStat
+  stats7d: LaunchpadsStat
+  stats30d: LaunchpadsStat
+  runners: Array<{
+    date: string
+    ids: string[]
+  }>
   icon: string
-  stats5m: LaunchpadsStats
-  stats1h: LaunchpadsStats
-  stats6h: LaunchpadsStats
-  stats24h: LaunchpadsStats
   url?: string
 }
 
 export type Duration = "5m" | "1h" | "6h" | "24h"
+export type StatDuration = "1d" | "7d" | "30d"
 
 export interface PoolStats {
   priceChange: number

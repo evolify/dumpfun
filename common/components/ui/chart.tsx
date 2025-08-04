@@ -128,7 +128,7 @@ function ChartTooltipContent({
     indicator?: "line" | "dot" | "dashed"
     nameKey?: string
     labelKey?: string
-    valueFormatter?: (value: number) => string
+    valueFormatter?: (value: number, item?: any) => string
   }) {
   const { config } = useChart()
 
@@ -239,7 +239,7 @@ function ChartTooltipContent({
                     </div>
                     {item.value && (
                       <span className="text-foreground font-mono font-medium tabular-nums">
-                        {valueFormatter(item.value)}
+                        {valueFormatter(item.value, item)}
                       </span>
                     )}
                   </div>

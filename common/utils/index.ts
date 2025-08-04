@@ -2,8 +2,9 @@ import type {
   Duration,
   Launchpad,
   LaunchpadsInfo,
-  LaunchpadsStats,
+  LaunchpadsStat,
   PoolStats,
+  StatDuration,
   TokenInfo,
 } from "@/types"
 
@@ -13,17 +14,16 @@ export function fetcher(url: string, init?: RequestInit) {
   return fetch(url, init).then(res => res.json())
 }
 
-export function getStats(data: LaunchpadsInfo, duration: Duration) {
-  return data[`stats${duration}`] as LaunchpadsStats
-}
-
 export function getLaunchpad(data: LaunchpadsInfo[], launchpad: Launchpad) {
   return data.find(item => item.id === launchpad)
 }
 
-export function getLaunchpadStats(data?: LaunchpadsInfo, duration?: Duration) {
-  if (!data) return {} as LaunchpadsStats
-  return data[`stats${duration}` as keyof LaunchpadsInfo] as LaunchpadsStats
+export function getLaunchpadStats(
+  data?: LaunchpadsInfo,
+  duration?: StatDuration
+) {
+  if (!data) return {} as LaunchpadsStat
+  return data[`stats${duration}` as keyof LaunchpadsInfo] as LaunchpadsStat
 }
 
 export function getTokenStats(data?: TokenInfo, duration?: Duration) {

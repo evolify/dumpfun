@@ -10,8 +10,10 @@
 @media (min-width: 768px) {
   .detail {
     margin-top: 0;
-    width: 640px;
-    max-height: 640px;
+    width: 90%;
+    height: 90%;
+    max-width: 1200px;
+    max-height: 800px;
     padding-bottom: 0;
   }
 }

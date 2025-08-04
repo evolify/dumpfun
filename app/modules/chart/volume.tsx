@@ -14,11 +14,10 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 import type { LaunchpadsInfo } from "@/types"
-import { useMemo } from "react"
-import { useDuration } from "@/hooks/duration"
-import DurationFilter from "@/components/duration-filter"
+import { useMemo, useState } from "react"
 import { getLaunchpadStats } from "@/utils"
 import { formatNumber } from "@/utils/format"
+import DurationFilter, { Duration } from "../duration-filter"
 
 const chartConfig = {
   visitors: {
@@ -46,7 +45,7 @@ interface Props {
 }
 
 export function Volume({ data }: Props) {
-  const { duration, onChange } = useDuration()
+  const [duration, setDuration] = useState<Duration>("1d")
   const chartData = useMemo(() => {
     return data.slice(0, 5).map(item => ({
       label: item.id,
@@ -59,7 +58,7 @@ export function Volume({ data }: Props) {
       <CardHeader className="items-center px-4 pb-0 h-9 flex flex-row justify-between">
         <CardTitle>Volumn</CardTitle>
         <CardAction>
-          <DurationFilter value={duration} onChange={onChange} />
+          <DurationFilter value={duration} onChange={setDuration} />
         </CardAction>
       </CardHeader>
       <CardContent className="flex-1 px-4 pb-0">

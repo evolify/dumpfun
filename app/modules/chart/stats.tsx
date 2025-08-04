@@ -1,29 +1,23 @@
 "use client"
-import { TrendingUp } from "lucide-react"
-import { CartesianGrid, Line, LineChart, XAxis, YAxis } from "recharts"
+
+import * as React from "react"
+import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
 
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
 import {
-  type ChartConfig,
+  ChartConfig,
   ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart"
-import {
-  Launchpad,
-  type Duration,
-  type LaunchpadsInfo,
-  type LaunchpadsStats,
-} from "@/types"
-import { useMemo, useState } from "react"
-import { getLaunchpad, getLaunchpadStats } from "@/utils"
 import {
   Select,
   SelectContent,
@@ -31,165 +25,147 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { LaunchpadsInfo } from "@/types"
+import { formatDate, formatNumber } from "@/utils/format"
 
-const chartConfig = {
-  pump_fun: {
-    label: "PumpFun",
-    color: "var(--chart-pump_fun)",
+const chartConfig: Record<string, any> = {
+  visitors: {
+    label: "Visitors",
   },
-  letsbonk_fun: {
-    label: "BonkFun",
-    color: "var(--chart-letsbonk_fun)",
+  desktop: {
+    label: "Desktop",
+    color: "var(--chart-1)",
   },
-  jup_studio: {
-    label: "JupStudio",
-    color: "var(--chart-jup_studio)",
+  mobile: {
+    label: "Mobile",
+    color: "var(--chart-2)",
   },
-  believe: {
-    label: "Believe",
-    color: "var(--chart-Believe)",
+  others: {
+    label: "Others",
   },
-  moonshot: {
-    label: "Moonshot",
-    color: "var(--chart-moonshot)",
-  },
-} satisfies ChartConfig
+}
 
 interface Props {
   data: LaunchpadsInfo[]
 }
 
-const durations: Duration[] = ["24h", "6h", "1h", "5m"]
-
-const options = [
-  {
-    label: "Market Share",
-    value: "marketShare",
-  },
-  {
-    label: "Volume",
-    value: "volume",
-  },
-  {
-    label: "Traders",
-    value: "traders",
-  },
-  {
-    label: "Mints",
-    value: "mints",
-  },
-  {
-    label: "Graduates",
-    value: "graduates",
-  },
-]
-
+type StatType = "dailyStats" | "newDailyStats"
 export default function Stats({ data }: Props) {
-  const [type, setType] = useState<keyof LaunchpadsStats>("marketShare")
-  const chartData = useMemo(() => {
-    return durations.map(duration => {
-      const pumpfun = getLaunchpad(data, Launchpad.PumpFun)
-      const bonkfun = getLaunchpad(data, Launchpad.BonkFun)
-      const jupstudio = getLaunchpad(data, Launchpad.JupStudio)
-      const believe = getLaunchpad(data, Launchpad.Believe)
-      const moonshot = getLaunchpad(data, Launchpad.Moonshot)
-      const pumpfunValue = getLaunchpadStats(pumpfun, duration)[type]
-      const bonkfunValue = getLaunchpadStats(bonkfun, duration)[type]
-      const jupstudioValue = getLaunchpadStats(jupstudio, duration)[type]
-      const believeValue = getLaunchpadStats(believe, duration)[type]
-      const moonshotValue = getLaunchpadStats(moonshot, duration)[type]
-      const total =
-        pumpfunValue +
-        bonkfunValue +
-        jupstudioValue +
-        believeValue +
-        moonshotValue
-      return {
-        duration,
-        pump_fun: (pumpfunValue / total) * 100,
-        letsbonk_fun: (bonkfunValue / total) * 100,
-        jup_studio: (jupstudioValue / total) * 100,
-        believe: (believeValue / total) * 100,
-        moonshot: (moonshotValue / total) * 100,
+  const [type, setType] = React.useState<StatType>("dailyStats")
+
+  const { chartData, keys } = React.useMemo(() => {
+    const times = data[0][type].map(t => formatDate(t.date))
+    const launchpads = data.slice(0, 5)
+    const chartData = times.map(t => {
+      const item: Record<string, any> = {
+        date: t,
       }
+      let total = 0
+      launchpads.forEach(d => {
+        const stat = d[type].find(s => formatDate(s.date) === t)
+        total += stat?.marketShare || 0
+        item[d.id] = stat?.marketShare
+        chartConfig[d.id] = {
+          label: d.launchpad,
+        }
+      })
+      item.others = 100 - total
+      return item
     })
+    return { chartData, keys: launchpads.map(d => d.id).concat("others") }
   }, [data, type])
 
+  function getVolume(launchpad: string, date: string) {
+    const d = data.find(d => d.id === launchpad)
+    const stat = d?.[type].find(s => formatDate(s.date) === date)
+    if (stat) {
+      return formatNumber(stat.volume)
+    }
+    return "-"
+  }
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <TrendingUp />
-          Launchpad Analytics
-        </CardTitle>
-        <CardDescription>24h / 6h / 1h / 5m</CardDescription>
-        <CardAction className="col-start-2">
-          <Select
-            value={type}
-            onValueChange={value => setType(value as keyof LaunchpadsStats)}
+    <Card className="pt-0">
+      <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
+        <div className="grid flex-1 gap-1">
+          <CardTitle>Launchpad Stats</CardTitle>
+          <CardDescription>
+            Showing marketShare and volume for the last months
+          </CardDescription>
+        </div>
+        <Select value={type} onValueChange={val => setType(val as StatType)}>
+          <SelectTrigger
+            className="hidden w-[160px] rounded-lg sm:ml-auto sm:flex"
+            aria-label="Select a value"
           >
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select a fruit" />
-            </SelectTrigger>
-            <SelectContent>
-              {options.map(option => (
-                <SelectItem key={option.value} value={option.value}>
-                  {option.label}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </CardAction>
+            <SelectValue placeholder="Last 3 months" />
+          </SelectTrigger>
+          <SelectContent className="rounded-xl">
+            <SelectItem value="dailyStats" className="rounded-lg">
+              Total Volumn
+            </SelectItem>
+            <SelectItem value="newDailyStats" className="rounded-lg">
+              New Volumn
+            </SelectItem>
+          </SelectContent>
+        </Select>
       </CardHeader>
-      <CardContent>
+      <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
         <ChartContainer
           config={chartConfig}
-          height={300}
-          style={{ aspectRatio: "unset" }}
+          className="aspect-auto h-[250px] w-full"
         >
-          <LineChart
-            accessibilityLayer
-            data={chartData}
-            height={300}
-            margin={{
-              left: 12,
-              right: 12,
-            }}
-          >
+          <AreaChart data={chartData}>
+            <defs>
+              {keys.map(k => (
+                <linearGradient key={k} id={k} x1="0" y1="0" x2="0" y2="1">
+                  <stop
+                    offset="5%"
+                    stopColor={`var(--chart-${k})`}
+                    stopOpacity={0.8}
+                  />
+                  <stop
+                    offset="95%"
+                    stopColor={`var(--chart-${k})`}
+                    stopOpacity={0.1}
+                  />
+                </linearGradient>
+              ))}
+            </defs>
             <CartesianGrid vertical={false} />
             <XAxis
-              dataKey="duration"
+              dataKey="date"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              tickFormatter={value => value.slice(0, 3)}
-            />
-            <YAxis
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              tickFormatter={value => `${value}%`}
+              minTickGap={32}
             />
             <ChartTooltip
               cursor={false}
               content={
                 <ChartTooltipContent
-                  valueFormatter={value => value.toFixed(2) + " %"}
+                  indicator="dot"
+                  valueFormatter={(value, item) =>
+                    `${value.toFixed(2)}% (${getVolume(
+                      item.dataKey,
+                      item.payload.date
+                    )})`
+                  }
                 />
               }
             />
-            {Object.entries(chartConfig).map(([key, value]) => (
-              <Line
-                key={key}
-                dataKey={key}
-                type="monotone"
-                stroke={value.color}
-                fillOpacity={1}
-                strokeWidth={2}
-                dot={false}
+            {keys.map(t => (
+              <Area
+                key={t}
+                dataKey={t}
+                type="natural"
+                fill={`url(#${t})`}
+                stroke={`var(--chart-${t})`}
+                stackId="a"
               />
             ))}
-          </LineChart>
+            <ChartLegend content={<ChartLegendContent payload={[]} />} />
+          </AreaChart>
         </ChartContainer>
       </CardContent>
     </Card>

@@ -1,6 +1,6 @@
 import { Launchpad, LaunchpadsInfo } from "@/types"
 
-const LaunchpadsStatsUrl = "https://datapi.jup.ag/v1/launchpads/stats"
+const LaunchpadsStatsUrl = "https://datapi.jup.ag/v3/launchpads/stats"
 
 const HoldersUrlBase = "https://datapi.jup.ag/v1/holders"
 
@@ -47,7 +47,7 @@ export async function getLaunchpadsStats() {
 }
 
 export async function getHolders(addr: string) {
-  const res = await fetch(`${HoldersUrlBase}/addr`, options)
+  const res = await fetch(`${HoldersUrlBase}/${addr}`, options)
   const data = await res.json()
   return data
 }
