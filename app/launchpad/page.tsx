@@ -6,8 +6,6 @@ import List from "./modules/list"
 import "./styles.css"
 import Title from "./modules/title"
 import { Suspense } from "react"
-import { SWRConfig } from "swr"
-import Modal from "@/components/modal"
 
 export default function Launchpad() {
   const data = getLaunchpadsStats()

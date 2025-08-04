@@ -1,7 +1,6 @@
 import { Launchpad, LaunchpadsInfo } from "@/types"
 
 const LaunchpadsStatsUrl = "https://datapi.jup.ag/v1/launchpads/stats"
-const LaunchpadDetailUrl = "https://datapi.jup.ag/v1/pools/toptraded"
 
 const HoldersUrlBase = "https://datapi.jup.ag/v1/holders"
 
@@ -41,6 +40,7 @@ export async function getLaunchpadsStats() {
         ...t,
         id,
         icon: getFavicon(config?.home),
+        url: config?.url,
       }
     }) || []
   )

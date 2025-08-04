@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button"
 import DataTable from "./data-table"
 import Detail from "./details"
 import Modal from "@/components/modal"
+import { cn } from "@/lib/utils"
 
 function renderGrid(data: PoolInfo[], onItemClick: (data: PoolInfo) => void) {
   return (
@@ -27,7 +28,10 @@ function renderGrid(data: PoolInfo[], onItemClick: (data: PoolInfo) => void) {
 export default function List() {
   const { duration, onChange } = useDuration("5m")
   const [layout, setLayout] = useState<"grid" | "table">("table")
-  const { isLoading, data, mutate } = useLaunchpadDetail(launchpad!, duration)
+  const { isLoading, isValidating, data, mutate } = useLaunchpadDetail(
+    launchpad!,
+    duration
+  )
   const [selected, setSelected] = useState<PoolInfo | null>(null)
 
   function select(data: PoolInfo) {
@@ -84,8 +88,8 @@ export default function List() {
           </ToggleGroupItem>
         </ToggleGroup>
 
-        <Button onClick={refresh} variant="outline">
-          <RotateCcw />
+        <Button disabled={isValidating} onClick={refresh} variant="outline">
+          <RotateCcw className={cn(isValidating && "animate-spin")} />
         </Button>
       </div>
       {renderContent()}

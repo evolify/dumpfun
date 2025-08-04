@@ -1,6 +1,7 @@
 export enum Launchpad {
   PumpFun = "pump_fun",
   BonkFun = "letsbonk_fun",
+  BagsFun = "bags_fun",
   JupStudio = "jup_studio",
   Believe = "Believe",
   Moonshot = "moonshot",
@@ -22,6 +23,7 @@ export interface LaunchpadsInfo {
   stats1h: LaunchpadsStats
   stats6h: LaunchpadsStats
   stats24h: LaunchpadsStats
+  url?: string
 }
 
 export type Duration = "5m" | "1h" | "6h" | "24h"
@@ -95,6 +97,7 @@ export interface PoolInfo {
   type: string
   updatedAt: string
   volume24h: number
+  latest?: boolean
 }
 
 export interface Holder {

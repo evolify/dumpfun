@@ -3,9 +3,9 @@
 import { LaunchpadConfig } from "@/constants"
 import { Suspense, use, useMemo } from "react"
 import { formatNumber } from "@/utils/format"
-import { Launchpad, LaunchpadsInfo } from "@/types"
+import { LaunchpadsInfo } from "@/types"
 import { Favicon } from "@/components/icon"
-import { useQuery } from "@/hooks"
+import { launchpad } from "../utils"
 
 interface Props {
   data: Promise<LaunchpadsInfo[]>
@@ -13,7 +13,6 @@ interface Props {
 
 function TitleContent(props: Props) {
   const data = use(props.data)
-  const launchpad = useQuery("launchpad") as Launchpad
   const launchpadConfig = LaunchpadConfig[launchpad]
 
   const launchpadInfo = useMemo(() => {

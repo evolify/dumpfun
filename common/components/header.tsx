@@ -15,7 +15,13 @@ import {
 import { NavigationMenuItem } from "@radix-ui/react-navigation-menu"
 import { MenuIcon } from "lucide-react"
 import { LaunchpadConfig } from "@/constants"
-import { Sheet, SheetContent, SheetHeader, SheetTrigger } from "./ui/sheet"
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "./ui/sheet"
 import { cn } from "@/lib/utils"
 import { TrackLabel } from "@/utils/track"
 import { NavLink } from "./nav-link"
@@ -86,6 +92,7 @@ export default function Header(props: Props) {
           <SheetTrigger>
             <MenuIcon />
           </SheetTrigger>
+          <SheetTitle className="sr-only" />
           <SheetContent side="left">
             <SheetHeader>Dumpfun</SheetHeader>
             <ul>

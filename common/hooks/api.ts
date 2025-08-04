@@ -6,6 +6,7 @@ import type {
   LaunchpadsInfo,
   PoolInfo,
 } from "@/types"
+import { useEffect, useMemo, useRef } from "react"
 import useSWR from "swr"
 
 const LaunchpadsStatsUrl = "https://datapi.jup.ag/v1/launchpads/stats"
@@ -50,11 +51,35 @@ export function useLaunchpadsStats() {
 export function useLaunchpadDetail(launchpad: Launchpad, duration: Duration) {
   const config = LaunchpadConfig[launchpad]
   const url = `${LaunchpadDetailUrl}/${duration}?launchpads=${config.launchpad}`
-  const { data, isLoading, error, mutate } = useSWR(url, getLaunchpadDetail)
+  const { data, isLoading, isValidating, error, mutate } = useSWR(
+    url,
+    getLaunchpadDetail,
+    {
+      onSuccess: data => {
+        if (data) {
+          if (prevData.current.length > 0) {
+            data.forEach((item: PoolInfo) => {
+              if (
+                !prevData.current.some(
+                  t => t.baseAsset.id === item.baseAsset.id
+                )
+              ) {
+                item.latest = true
+              }
+            })
+          }
+          prevData.current = data
+        }
+      },
+    }
+  )
+
+  const prevData = useRef<PoolInfo[]>([])
 
   return {
     data,
     isLoading,
+    isValidating,
     error,
     mutate,
   }

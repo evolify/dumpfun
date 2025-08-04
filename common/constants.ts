@@ -1,19 +1,25 @@
 import { Launchpad } from "./types"
 import { getLaunchpadLink } from "./utils"
 
-const { PumpFun, BonkFun, JupStudio, Believe, Moonshot } = Launchpad
+const { PumpFun, BonkFun, BagsFun, JupStudio, Believe, Moonshot } = Launchpad
 export const LaunchpadConfig = {
-  [PumpFun]: {
-    launchpad: "pump.fun",
-    name: "Pumpfun",
-    url: getLaunchpadLink(PumpFun),
-    home: "pump.fun",
-  },
   [BonkFun]: {
     launchpad: "letsbonk.fun",
     name: "Letsbonk",
     url: getLaunchpadLink(BonkFun),
     home: "letsbonk.fun",
+  },
+  [BagsFun]: {
+    launchpad: "bags.fun",
+    name: "Bags",
+    url: getLaunchpadLink(BagsFun),
+    home: "bags.fm",
+  },
+  [PumpFun]: {
+    launchpad: "pump.fun",
+    name: "Pumpfun",
+    url: getLaunchpadLink(PumpFun),
+    home: "pump.fun",
   },
   [JupStudio]: {
     launchpad: "jup-studio",

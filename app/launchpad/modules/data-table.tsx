@@ -23,6 +23,7 @@ import { formatNumber, formatTime } from "@/utils/format"
 import { useStickyTable } from "@/hooks/table"
 import { getFdvColor, getTimeColor } from "@/utils/color"
 import clsx from "clsx"
+import { cn } from "@/lib/utils"
 
 interface Props {
   data: PoolInfo[]
@@ -51,7 +52,11 @@ export default function DataTable({ data, duration, onItemClick }: Props) {
           {data?.map(item => {
             const stats = getTokenStats(item.baseAsset, duration)
             return (
-              <TableRow key={item.id} onClick={() => onItemClick(item)}>
+              <TableRow
+                key={item.id}
+                className={cn(item.latest && "bg-sky-950")}
+                onClick={() => onItemClick(item)}
+              >
                 <TableCell className="flex items-center gap-2">
                   <div className="w-8 h-8 rounded-sm overflow-hidden">
                     <img src={item.baseAsset.icon} />
