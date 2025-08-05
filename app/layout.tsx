@@ -1,4 +1,4 @@
-import type { Metadata } from "next"
+import type { Metadata, Viewport } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import { GoogleTagManager } from "@next/third-parties/google"
 import "@/styles/common.css"
@@ -51,6 +51,10 @@ export const metadata: Metadata = {
     },
     description: APP_DESCRIPTION,
   },
+}
+
+export const viewport: Viewport = {
+  themeColor: "#000000",
 }
 
 export default function RootLayout({

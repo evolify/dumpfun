@@ -12,30 +12,39 @@ function throttle(fn: (args: any) => void, delay: number) {
 }
 
 function cloneHeader(table: HTMLTableElement) {
-  if (document.getElementById("fixed-header"))
-    return document.getElementById("fixed-header") as HTMLDivElement
+  if (document.getElementById("fixed-header")) {
+    return [
+      document.getElementById("fixed-header-wrapper") as HTMLDivElement,
+      document.getElementById("fixed-header") as HTMLDivElement,
+    ]
+  }
   const rect = table.getBoundingClientRect()
   const header = table.querySelector("thead")
-  if (!header) return null
+  if (!header) return []
+  const wrapper = document.createElement("div")
   const fixedHeader = document.createElement("div")
+  wrapper.id = "fixed-header-wrapper"
   fixedHeader.id = "fixed-header"
-  fixedHeader.style.position = "fixed"
-  fixedHeader.style.top = "0"
-  fixedHeader.style.left = "0"
-  fixedHeader.style.right = "0"
-  fixedHeader.style.margin = `0 auto`
-  fixedHeader.style.zIndex = "100"
+  wrapper.style.backgroundColor = "var(--background)"
+  wrapper.style.position = "fixed"
+  wrapper.style.top = "0"
+  wrapper.style.left = "0"
+  wrapper.style.right = "0"
+  wrapper.style.zIndex = "100"
+  wrapper.style.width = "100vw"
+  wrapper.style.display = "none"
+  fixedHeader.style.margin = "0 auto"
   fixedHeader.style.width = `${rect.width}px`
-  fixedHeader.style.overflow = "auto"
-  fixedHeader.style.display = "none"
+  fixedHeader.style.overflow = "hidden"
 
   const clonedTable = table.cloneNode(false)
   const clonedHeader = header?.cloneNode(true)
   clonedTable.appendChild(clonedHeader)
   fixedHeader.appendChild(clonedTable)
-  document.body.appendChild(fixedHeader)
+  wrapper.appendChild(fixedHeader)
+  document.body.appendChild(wrapper)
   syncColumnWidths(table, fixedHeader)
-  return fixedHeader
+  return [wrapper, fixedHeader]
 }
 
 function syncColumnWidths(
@@ -55,15 +64,16 @@ function syncColumnWidths(
 export function useStickyTable() {
   const tableRef = useRef<HTMLTableElement>(null)
   const fixedHeaderRef = useRef<HTMLDivElement>(null)
+  const wrapperRef = useRef<HTMLDivElement>(null)
 
   function onScroll() {
     if (!tableRef.current) return
     const table = tableRef.current
     const rect = table.getBoundingClientRect()
     if (rect.top < 0) {
-      fixedHeaderRef.current!.style.display = "block"
+      wrapperRef.current!.style.display = "block"
     } else {
-      fixedHeaderRef.current!.style.display = "none"
+      wrapperRef.current!.style.display = "none"
     }
   }
 
@@ -76,7 +86,9 @@ export function useStickyTable() {
   useEffect(() => {
     if (!tableRef.current) return
     const table = tableRef.current
-    fixedHeaderRef.current = cloneHeader(table)
+    const [wrapper, fixedHeader] = cloneHeader(table)
+    fixedHeaderRef.current = fixedHeader
+    wrapperRef.current = wrapper
     const debouncedOnScroll = throttle(onScroll, 100)
     window.addEventListener("scroll", debouncedOnScroll)
     tableRef.current.parentElement?.addEventListener("scroll", onTableScroll)

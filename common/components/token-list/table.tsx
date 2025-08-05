@@ -32,8 +32,8 @@ interface Props {
 export default function DataTable({ data, duration, onItemClick }: Props) {
   const { tableRef } = useStickyTable()
   return (
-    <Table ref={tableRef} className="bg-card">
-      <TableHeader>
+    <Table ref={tableRef}>
+      <TableHeader className="sticky top-0 bg-background">
         <TableRow className="text-sm text-gray-400">
           <TableHead>Name / Age</TableHead>
           <TableHead>Market Cap</TableHead>

@@ -163,7 +163,10 @@ export default function Stats({ data }: Props) {
                 stackId="a"
               />
             ))}
-            <ChartLegend content={<ChartLegendContent payload={[]} />} />
+            <ChartLegend
+              className="flex-wrap"
+              content={<ChartLegendContent payload={[]} />}
+            />
           </AreaChart>
         </ChartContainer>
       </CardContent>
