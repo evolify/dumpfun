@@ -53,7 +53,7 @@ export default function LaunchpadsTable(props: Props) {
   }, [list])
 
   return (
-    <Card className="mt-4">
+    <Card>
       <CardHeader className="flex items-center">
         <CardTitle> Launchpads Detail </CardTitle>
         <CardAction className="flex items-center gap-2 ml-auto">

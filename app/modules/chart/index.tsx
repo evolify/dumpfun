@@ -11,7 +11,7 @@ interface Props {
 export default function Chart(props: Props) {
   const data = use(props.data)
   return (
-    <div className="mt-4">
+    <div>
       <Stats data={data} />
       {/* <div className="flex flex-row flex-wrap gap-4 mt-4">
         <Volume data={data} />

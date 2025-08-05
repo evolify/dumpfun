@@ -36,6 +36,11 @@ interface MenuItem {
 
 const menus: MenuItem[] = [
   {
+    label: "Home",
+    value: "/",
+    trackLabel: TrackLabel.LAUNCHPAD,
+  },
+  {
     label: "Launchpads",
     children: Object.values(LaunchpadConfig).map(t => ({
       label: t.name,
@@ -105,20 +110,18 @@ export default function Header(props: Props) {
                   )}
                 >
                   {item.children ? (
-                    <>
-                      <ul className="w-50 py-2">
-                        <span>{item.label}</span>
-                        {item.children.map(t => (
-                          <NavLink
-                            key={t.label}
-                            label={t.label}
-                            value={t.value!}
-                            icon={t.icon}
-                            trackLabel={t.trackLabel!}
-                          />
-                        ))}
-                      </ul>
-                    </>
+                    <ul className=" py-2">
+                      <span>{item.label}</span>
+                      {item.children.map(t => (
+                        <NavLink
+                          key={t.label}
+                          label={t.label}
+                          value={t.value!}
+                          icon={t.icon}
+                          trackLabel={t.trackLabel!}
+                        />
+                      ))}
+                    </ul>
                   ) : (
                     <NavLink
                       label={item.label}

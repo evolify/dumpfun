@@ -1,6 +1,6 @@
 "use client"
 
-import * as React from "react"
+import { useState, useMemo } from "react"
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts"
 
 import {
@@ -11,7 +11,6 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import {
-  ChartConfig,
   ChartContainer,
   ChartLegend,
   ChartLegendContent,
@@ -51,9 +50,9 @@ interface Props {
 
 type StatType = "dailyStats" | "newDailyStats"
 export default function Stats({ data }: Props) {
-  const [type, setType] = React.useState<StatType>("dailyStats")
+  const [type, setType] = useState<StatType>("dailyStats")
 
-  const { chartData, keys } = React.useMemo(() => {
+  const { chartData, keys } = useMemo(() => {
     const times = data[0][type].map(t => formatDate(t.date))
     const launchpads = data.slice(0, 5)
     const chartData = times.map(t => {

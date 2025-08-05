@@ -10,7 +10,7 @@ import { formatAddress, formatNumber, formatTime } from "@/utils/format"
 import { click, TrackLabel } from "@/utils/track"
 import { Copy, Twitter } from "lucide-react"
 
-interface Props {
+interface ItemProps {
   data: PoolInfo
   onClick: (data: PoolInfo) => void
 }
@@ -33,7 +33,7 @@ function renderDurationValue(
   })
 }
 
-export default function Item(props: Props) {
+export function Item(props: ItemProps) {
   const { data, onClick } = props
   const { baseAsset } = data
   function copyAddr(e: React.MouseEvent) {
@@ -129,5 +129,21 @@ export default function Item(props: Props) {
         </Button>
       </div>
     </Card>
+  )
+}
+
+interface Props {
+  data: PoolInfo[]
+  onItemClick: (data: PoolInfo) => void
+}
+
+export default function Grid(props: Props) {
+  const {data, onItemClick} = props
+  return (
+    <div className="grid grid-cols-3 gap-4 token-list">
+      {data?.map(item => (
+        <Item key={item.id} data={item} onClick={onItemClick} />
+      ))}
+    </div>
   )
 }
