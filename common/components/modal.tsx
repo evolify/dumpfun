@@ -3,6 +3,7 @@ import React from "react"
 import { useMobile } from "@/hooks/media"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer"
+import { cn } from "@/lib/utils"
 
 interface Props {
   className?: string
@@ -27,7 +28,9 @@ export default function Modal(props: Props) {
         <DrawerHeader className="sr-only">
           <DrawerTitle></DrawerTitle>
         </DrawerHeader>
-        <DrawerContent className={className}>{children}</DrawerContent>
+        <DrawerContent className={cn(className, "rounded-t-2xl!")}>
+          {children}
+        </DrawerContent>
       </Drawer>
     )
   }

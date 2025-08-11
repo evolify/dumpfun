@@ -47,7 +47,7 @@ export default function Detail(props: Props) {
       className="p-0 gap-0 flex-1 flex flex-col"
       onClick={e => e.stopPropagation()}
     >
-      <div className="flex flex-row items-center gap-2 p-4">
+      <div className="flex flex-row items-center gap-2 px-4 mt-2">
         <img src={data.baseAsset.icon} className="w-8 h-8 rounded-[6px]" />
         <div className="flex-1">
           <div className="flex flex-row items-center gap-4">
@@ -85,56 +85,58 @@ export default function Detail(props: Props) {
         </div>
       </div>
 
-      <div className="flex flex-row items-center gap-2 mx-4"></div>
-
-      <Tabs defaultValue="info" className="grow-1 h-0 px-5">
-        <TabsList className="self-stretch w-full">
-          <TabsTrigger value="info">Info</TabsTrigger>
-          <TabsTrigger value="holders">
-            Holder({baseAsset.holderCount})
-          </TabsTrigger>
-        </TabsList>
-        <TabsContent value="info">
+      <Tabs defaultValue="info" className="grow-1 h-0 mt-2 gap-0">
+        <TabsContent className="px-5" value="info">
           <Info data={data} />
         </TabsContent>
-        <TabsContent value="holders" className="h-0 flex-1 overflow-y-auto">
+        <TabsContent
+          value="holders"
+          className="px-5 h-0 flex-1 overflow-y-auto"
+        >
           <Holders address={baseAsset.id} supply={baseAsset.circSupply} />
         </TabsContent>
-      </Tabs>
 
-      <Separator />
-      <div className="flex flex-row items-center gap-2 px-2 py-2">
-        <Button variant="secondary" size="sm" onClick={toSearch}>
-          <Search className="w-4 h-4 text-cyan-500" />
-        </Button>
-        {baseAsset.twitter && (
+        <Separator />
+        <div className="flex flex-row items-center gap-2 px-2 py-2">
+          <Button variant="secondary" size="sm" onClick={toSearch}>
+            <Search className="w-4 h-4 text-cyan-500" />
+          </Button>
+          {baseAsset.twitter && (
+            <Button
+              variant="secondary"
+              size="sm"
+              onClick={() => to(baseAsset.twitter, TrackLabel.TWITTER)}
+            >
+              <Twitter className="w-4 h-4 text-blue-500" />
+            </Button>
+          )}
+
+          <TabsList className="self-stretch ml-auto">
+            <TabsTrigger value="info">Info</TabsTrigger>
+            <TabsTrigger value="holders">
+              Holder({formatNumber(baseAsset.holderCount)})
+            </TabsTrigger>
+          </TabsList>
+
           <Button
             variant="secondary"
             size="sm"
-            onClick={() => to(baseAsset.twitter, TrackLabel.TWITTER)}
+            className="ml-auto"
+            onClick={() => to(getGmgnLink(baseAsset.id), TrackLabel.GMGN)}
           >
-            <Twitter className="w-4 h-4 text-blue-500" />
+            <GmgnIcon />
+            <span className="hidden md:block"> GMGN </span>
           </Button>
-        )}
-
-        <Button
-          variant="secondary"
-          size="sm"
-          className="ml-auto"
-          onClick={() => to(getGmgnLink(baseAsset.id), TrackLabel.GMGN)}
-        >
-          <GmgnIcon />
-          GMGN
-        </Button>
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={() => to(getAxiomLink(baseAsset.id), TrackLabel.AXIOM)}
-        >
-          <AxiomIcon />
-          Axiom
-        </Button>
-      </div>
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => to(getAxiomLink(baseAsset.id), TrackLabel.AXIOM)}
+          >
+            <AxiomIcon />
+            <span className="hidden md:block"> Axiom </span>
+          </Button>
+        </div>
+      </Tabs>
     </div>
   )
 }

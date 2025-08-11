@@ -20,7 +20,7 @@ export default function Info({ data }: Props) {
         />
       </div>
 
-      <div className="py-4 flex flex-col gap-1">
+      <div className="py-2 flex flex-col gap-2">
         <div>
           <Badge variant="secondary" className="">
             DevTokens {baseAsset.audit.devMigrations}
@@ -30,7 +30,9 @@ export default function Info({ data }: Props) {
           </Badge>
         </div>
         {narrative && (
-          <div className="text-sm text-gray-200 mt-2">{narrative}</div>
+          <div className="text-sm leading-4.5 line-clamp-3 text-gray-200">
+            {narrative}
+          </div>
         )}
       </div>
     </div>
