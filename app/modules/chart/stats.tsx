@@ -53,7 +53,9 @@ export default function Stats({ data }: Props) {
   const [type, setType] = useState<StatType>("dailyStats")
 
   const { chartData, keys } = useMemo(() => {
-    const times = data[0][type].map(t => formatDate(t.date))
+    const times = data[0][type]
+      .map(t => formatDate(t.date))
+      .sort((a, b) => new Date(a).getTime() - new Date(b).getTime())
     const launchpads = data.slice(0, 5)
     const chartData = times.map(t => {
       const item: Record<string, any> = {
