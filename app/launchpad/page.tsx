@@ -1,6 +1,5 @@
 import Header from "@/components/header"
 import { Toaster } from "sonner"
-import { getLaunchpadsStats } from "@/utils/api"
 import { Separator } from "@/components/ui/separator"
 import List from "./modules/list"
 import "./styles.css"
@@ -8,11 +7,9 @@ import Title from "./modules/title"
 import { Suspense } from "react"
 
 export default function Launchpad() {
-  const data = getLaunchpadsStats()
-
   return (
     <div>
-      <Header title={<Title data={data} />} />
+      <Header title={<Title />} />
       <Separator />
       <div className="p-5">
         <Suspense>

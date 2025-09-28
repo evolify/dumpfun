@@ -86,12 +86,12 @@ export default function Detail(props: Props) {
       </div>
 
       <Tabs defaultValue="info" className="grow-1 h-0 mt-2 gap-0">
-        <TabsContent className="px-5" value="info">
+        <TabsContent value="info">
           <Info data={data} />
         </TabsContent>
         <TabsContent
           value="holders"
-          className="px-5 h-0 flex-1 overflow-y-auto"
+          className="px-4 h-0 flex-1 overflow-y-auto"
         >
           <Holders address={baseAsset.id} supply={baseAsset.circSupply} />
         </TabsContent>

@@ -20,7 +20,7 @@ export default function Info({ data }: Props) {
         />
       </div>
 
-      <div className="py-2 flex flex-col gap-2">
+      <div className="px-4 py-2 flex flex-col gap-2">
         <div>
           <Badge variant="secondary" className="">
             DevTokens {baseAsset.audit.devMigrations}

@@ -3,6 +3,12 @@ import { getLaunchpadLink } from "./utils"
 
 const { PumpFun, BonkFun, BagsFun, JupStudio, Believe, Moonshot } = Launchpad
 export const LaunchpadConfig = {
+  [PumpFun]: {
+    launchpad: "pump.fun",
+    name: "Pumpfun",
+    url: getLaunchpadLink(PumpFun),
+    home: "pump.fun",
+  },
   [BonkFun]: {
     launchpad: "letsbonk.fun",
     name: "Letsbonk",
@@ -14,12 +20,6 @@ export const LaunchpadConfig = {
     name: "Bags",
     url: getLaunchpadLink(BagsFun),
     home: "bags.fm",
-  },
-  [PumpFun]: {
-    launchpad: "pump.fun",
-    name: "Pumpfun",
-    url: getLaunchpadLink(PumpFun),
-    home: "pump.fun",
   },
   [JupStudio]: {
     launchpad: "jup-studio",

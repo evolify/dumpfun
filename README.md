@@ -3,14 +3,22 @@ Tools for Solana meme trade.
 
 ## Launchpad insight
 ### Features:
-- Quick view liquidity、volume、traders...
-- Support pump.fun、letsbonk.fun、jup.studio...
-- View in chart and table.
+- View data for top launchpads
+- Get runners and top traded tokens
+- View chart and data for a token without leaving the list 
+- Quick trade with Axiom or Gmgn
+- Support desktop and mobile
 
 ### Screenshots
 <center>
-  <img src="https://cdn.jsdelivr.net/gh/evolify/dumpfun/res/1.jpeg" alt="basic">
-  <img src="https://cdn.jsdelivr.net/gh/evolify/dumpfun/res/2.jpeg" alt="table">
+  <img src="./screenshots/1.png" alt="home">
+  <img src="./screenshots/2.png" alt="launchpad">
+  <img src="./screenshots/3.png" alt="detail">
 </center>
+<div>
+  <img src="./screenshots/4.png" width="49%" alt="detail">
+  <img src="./screenshots/5.png" width="49%" alt="cards">
+</div>
 
-## Launchpad token tools (incomming)
+## TODO:
+- Tag top trader

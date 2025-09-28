@@ -1,17 +1,11 @@
 "use client"
 
 import { LaunchpadConfig } from "@/constants"
-import { Suspense, use } from "react"
-import { LaunchpadsInfo } from "@/types"
+import { Suspense } from "react"
 import { Favicon } from "@/components/icon"
 import { launchpad } from "../utils"
 
-interface Props {
-  data: Promise<LaunchpadsInfo[]>
-}
-
-function TitleContent(props: Props) {
-  const data = use(props.data)
+function TitleContent() {
   const launchpadConfig = LaunchpadConfig[launchpad]
 
   return (
@@ -23,10 +17,10 @@ function TitleContent(props: Props) {
   )
 }
 
-export default function Title(props: Props) {
+export default function Title() {
   return (
     <Suspense>
-      <TitleContent {...props} />
+      <TitleContent />
     </Suspense>
   )
 }
